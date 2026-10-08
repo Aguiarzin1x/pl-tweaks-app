@@ -160,7 +160,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
           <header className="sticky top-0 z-40 flex h-16 items-center gap-3 border-b border-border bg-[#090A0F]/85 px-4 backdrop-blur-xl sm:px-6">
             <Link to="/app" className="flex items-center gap-2 lg:hidden">
               <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-heading text-xs font-black text-primary-foreground">
-                RIP
+                PL
               </span>
             </Link>
 
