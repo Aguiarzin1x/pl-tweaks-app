@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/__clerk/(.*)",
-      "destination": "https://clerk.pl-tweaks-psi.vercel.app/$1"
+      "destination": "https://frontend-api.clerk.dev/$1"
     },
     {
       "source": "/api/(.*)",
