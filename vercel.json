@@ -4,12 +4,8 @@
   "framework": null,
   "rewrites": [
     {
-      "source": "/__clerk",
-      "destination": "https://frontend-api.clerk.dev"
-    },
-    {
       "source": "/__clerk/(.*)",
-      "destination": "https://frontend-api.clerk.dev/$1"
+      "destination": "https://clerk.pl-tweaks-psi.vercel.app/$1"
     },
     {
       "source": "/api/(.*)",
