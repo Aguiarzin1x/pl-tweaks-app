@@ -4,6 +4,14 @@
   "framework": null,
   "rewrites": [
     {
+      "source": "/__clerk",
+      "destination": "https://frontend-api.clerk.dev"
+    },
+    {
+      "source": "/__clerk/(.*)",
+      "destination": "https://frontend-api.clerk.dev/$1"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "/api/index.py"
     },
