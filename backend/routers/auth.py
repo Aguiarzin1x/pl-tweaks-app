@@ -49,6 +49,8 @@ DEMO_SEED_KEYS = [
     "usb-polling-1000",
 ]
 
+_jwks_clients: dict[str, jwt.PyJWKClient] = {}
+
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
@@ -106,7 +108,11 @@ async def _clerk_identity(request: Request) -> dict:
         if not issuer:
             raise ValueError("issuer ausente")
         jwks_url = os.getenv("CLERK_JWKS_URL") or f"{issuer}/.well-known/jwks.json"
-        jwks = jwt.PyJWKClient(jwks_url).get_signing_key_from_jwt(token)
+        client = _jwks_clients.get(jwks_url)
+        if client is None:
+            client = jwt.PyJWKClient(jwks_url, cache_jwk_set=True, lifespan=600, timeout=5)
+            _jwks_clients[jwks_url] = client
+        jwks = await asyncio.to_thread(client.get_signing_key_from_jwt, token)
         claims = jwt.decode(token, jwks.key, algorithms=["RS256"], issuer=issuer, options={"require": ["sub", "exp"]})
     except Exception as exc:
         logger.warning("Clerk token rejected: %s", exc)
@@ -115,7 +121,7 @@ async def _clerk_identity(request: Request) -> dict:
     email = claims.get("email") or claims.get("email_address") or claims.get("primary_email_address")
     if not email and os.getenv("CLERK_SECRET_KEY"):
         try:
-            async with httpx.AsyncClient(timeout=8) as client:
+            async with httpx.AsyncClient(timeout=4) as client:
                 r = await client.get(f"https://api.clerk.com/v1/users/{user_id}", headers={"Authorization": f"Bearer {os.environ['CLERK_SECRET_KEY']}"})
                 r.raise_for_status()
                 data = r.json()
