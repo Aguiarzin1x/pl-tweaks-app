@@ -8,7 +8,7 @@ export default function ClerkRouteBoundary({ children }: { children: ReactNode }
   const location = useLocation();
   const [timedOut, setTimedOut] = useState(false);
   const isProtected = location.pathname.startsWith("/app") || location.pathname.startsWith("/admin");
-  const isAuthPage = location.pathname === "/" || location.pathname === "/login";
+  const isAuthPage = location.pathname === "/" || location.pathname.startsWith("/login");
 
   useEffect(() => {
     if (isLoaded || !isProtected) {

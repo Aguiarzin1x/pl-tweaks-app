@@ -20,7 +20,8 @@ export default function App() {
       <Toaster position="bottom-right" richColors />
       <Routes>
         <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login />} />
+        {/* Clerk path routing uses nested callback states for email/code flows. */}
+        <Route path="/login/*" element={<Login />} />
         <Route path="/app" element={<DashboardHome />} />
         <Route path="/app/ajustes" element={<Tweaks />} />
         <Route path="/app/jogos" element={<Games />} />
