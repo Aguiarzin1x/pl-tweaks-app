@@ -37,6 +37,9 @@ if (!hotReloadDisabled) {
 export default defineConfig(async () => {
   const emergentOverlay = await loadEmergentOverlay();
   return {
+    // Accept both Vite's convention and the NEXT_PUBLIC_* name used by the
+    // existing Vercel environment configuration.
+    envPrefix: ["VITE_", "NEXT_PUBLIC_"],
     plugins: [
       react(),
       tailwindcss(),
