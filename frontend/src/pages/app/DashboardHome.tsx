@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { useUser } from "@clerk/clerk-react";
 import { toast } from "sonner";
-import { ArrowRight, Crown, History, Zap } from "lucide-react";
+import { ArrowRight, Crown, History, Zap, Copy, Users } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -8,7 +10,49 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import AppShell, { useAppUi } from "@/components/app/AppShell";
 import HardwareGauges from "@/components/app/HardwareGauges";
 import OptimizationRing from "@/components/app/OptimizationRing";
-import { useCatalog, useMe, useRestore, useTweaksState } from "@/lib/queries";
+import { useCatalog, useMe, useRestore, useTweaksState, useReferral } from "@/lib/queries";
+import { apiPost } from "@/lib/api";
+import { clerkConfigured } from "@/lib/clerk";
+
+function ReferralCard() {
+  const referral = useReferral();
+  const copy = async () => {
+    if (!referral.data?.link) return;
+    await navigator.clipboard.writeText(referral.data.link);
+    toast.success("Link de indicação copiado");
+  };
+  return (
+    <Card className="border-primary/25 bg-primary/5">
+      <CardContent className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-start gap-3">
+          <div className="flex size-10 items-center justify-center rounded-lg bg-primary/15"><Users className="size-5 text-primary" /></div>
+          <div><p className="font-heading font-bold">Indique e acompanhe</p><p className="text-sm text-muted-foreground">Compartilhe seu link único e veja quantos amigos entraram.</p></div>
+        </div>
+        <div className="flex items-center gap-2">
+          <code className="max-w-[220px] truncate rounded-md border border-border bg-background px-3 py-2 text-xs">{referral.data?.link ?? "Gerando link…"}</code>
+          <Button size="sm" variant="outline" onClick={() => void copy()} disabled={!referral.data?.link}><Copy className="size-4" /> Copiar Link</Button>
+          <Badge variant="outline" className="whitespace-nowrap">{referral.data?.count ?? 0} indicações</Badge>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+function AdminAccessCard() {
+  const { user } = useUser();
+  const email = user?.primaryEmailAddress?.emailAddress?.toLowerCase();
+  const configuredAdmin = (import.meta.env.VITE_ADMIN_EMAIL || "plfca11@gmail.com").toLowerCase();
+  const isAdmin = email === configuredAdmin;
+  if (!isAdmin) return null;
+  return (
+    <Card className="border-amber-500/30 bg-amber-500/10">
+      <CardContent className="flex flex-wrap items-center justify-between gap-3 p-4">
+        <div><p className="font-heading font-bold text-amber-200">Acesso de administrador</p><p className="text-sm text-amber-100/70">Sua conta tem acesso ao painel de gestão.</p></div>
+        <Link to="/admin" className="inline-flex h-9 items-center rounded-md border border-amber-400/40 px-4 text-sm font-medium text-amber-200 transition-colors hover:bg-amber-400/10 hover:text-amber-100">Abrir /admin</Link>
+      </CardContent>
+    </Card>
+  );
+}
 
 function HomeContent() {
   const me = useMe();
@@ -16,6 +60,12 @@ function HomeContent() {
   const catalog = useCatalog();
   const restore = useRestore();
   const ui = useAppUi();
+  useEffect(() => {
+    const code = localStorage.getItem("pl_referral_code");
+    if (me.isSuccess && code) {
+      void apiPost(`/referrals/claim/${encodeURIComponent(code)}`).then(() => localStorage.removeItem("pl_referral_code"));
+    }
+  }, [me.isSuccess]);
 
   const metrics = state.data?.metrics;
   const pct = metrics?.optimization_pct ?? 0;
@@ -37,6 +87,8 @@ function HomeContent() {
           Telemetria ao vivo do seu PC e nível geral de otimização.
         </p>
       </div>
+      <ReferralCard />
+      {clerkConfigured && <AdminAccessCard />}
 
       <HardwareGauges optimizationPct={pct} />
 

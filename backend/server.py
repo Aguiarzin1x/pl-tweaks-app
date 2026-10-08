@@ -23,6 +23,7 @@ from routers.cleanup import router as cleanup_router
 from routers.hardware import router as hardware_router
 from routers.history import router as history_router
 from routers.tweaks import router as tweaks_router
+from routers.referrals import router as referrals_router
 
 
 # Create the main app
@@ -69,6 +70,7 @@ api_router.include_router(benchmark_router)
 api_router.include_router(history_router)
 api_router.include_router(cleanup_router)
 api_router.include_router(alerts_router)
+api_router.include_router(referrals_router)
 
 # Include the router in the main app
 app.include_router(api_router)

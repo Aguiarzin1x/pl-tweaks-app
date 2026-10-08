@@ -5,13 +5,24 @@ import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
 import { queryClient } from './lib/queryClient'
+import { ClerkProvider } from '@clerk/clerk-react'
+import { ClerkTokenBridge, clerkConfigured, clerkPublishableKey } from './lib/clerk'
+import ClerkRouteBoundary from './components/ClerkRouteBoundary'
+
+function Root() {
+  const app = (
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        {clerkConfigured && <ClerkTokenBridge />}
+        {clerkConfigured ? <ClerkRouteBoundary><App /></ClerkRouteBoundary> : <App />}
+      </BrowserRouter>
+    </QueryClientProvider>
+  )
+  return clerkConfigured ? <ClerkProvider publishableKey={clerkPublishableKey} signInFallbackRedirectUrl="/app" signUpFallbackRedirectUrl="/app">{app}</ClerkProvider> : app
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </QueryClientProvider>
+    <Root />
   </StrictMode>,
 )

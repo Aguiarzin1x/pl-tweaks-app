@@ -1,7 +1,7 @@
 // TanStack Query hooks over the typed fetch layer. Every call is a relative /api path.
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { apiGet, apiPost, apiPut } from "@/lib/api";
+import { apiGet, apiPost, apiPut, apiPatch } from "@/lib/api";
 import type {
   AlertsList,
   BenchmarkList,
@@ -18,6 +18,8 @@ import type {
   TweaksState,
   User,
   VipOut,
+  ReferralInfo,
+  AdminUser,
 } from "@/lib/types";
 import { queryClient } from "@/lib/queryClient";
 
@@ -27,6 +29,19 @@ export function useMe() {
     queryFn: () => apiGet<User>("/auth/me"),
     retry: false,
     staleTime: 60_000,
+  });
+}
+
+export function useReferral(enabled = true) {
+  return useQuery({ queryKey: ["referral"], queryFn: () => apiGet<ReferralInfo>("/referrals/me"), enabled, retry: false });
+}
+export function useAdminUsers(enabled = true) {
+  return useQuery({ queryKey: ["admin-users"], queryFn: () => apiGet<AdminUser[]>("/admin/users"), enabled, retry: false });
+}
+export function useToggleAdminSubscription() {
+  return useMutation({
+    mutationFn: (v: { userId: string; active: boolean }) => apiPatch<{ is_premium: boolean }>(`/admin/users/${v.userId}/subscription`, { active: v.active }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-users"] }),
   });
 }
 

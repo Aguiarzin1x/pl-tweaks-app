@@ -8,6 +8,19 @@ export interface User {
   is_guest: boolean;
 }
 
+export interface ReferralInfo {
+  code: string;
+  link: string;
+  count: number;
+}
+export interface AdminUser {
+  id: string;
+  email: string;
+  is_premium: boolean;
+  referral_count: number;
+  created_at: string;
+}
+
 export interface TweakCategory {
   id: string;
   name: string;

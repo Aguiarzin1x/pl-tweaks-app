@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 from lib.catalog import TWEAKS, TWEAK_BY_KEY
 from lib.db import db
 from models.tweaks import Metrics, StateOut
+from lib.supabase import upsert as supabase_upsert
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,11 @@ async def save_state(user_id: str, applied: list[str], rip_mode_active: bool) ->
         },
         upsert=True,
     )
+    await supabase_upsert(
+        "tweak_states",
+        {"user_id": user_id, "applied": applied, "rip_mode_active": rip_mode_active},
+        "user_id",
+    )
 
 
 async def log_action(
@@ -77,6 +83,17 @@ async def log_action(
             "optimization_pct": m.optimization_pct,
             "created_at": now(),
         }
+    )
+    await supabase_upsert(
+        "tweak_events",
+        {
+            "id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "kind": kind,
+            "label": label,
+            "detail": detail,
+            "applied_after": list(applied_after),
+        },
     )
 
 

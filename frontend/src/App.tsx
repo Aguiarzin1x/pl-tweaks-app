@@ -10,6 +10,8 @@ import Benchmark from "@/pages/app/Benchmark";
 import History from "@/pages/app/History";
 import Cleanup from "@/pages/app/Cleanup";
 import About from "@/pages/app/About";
+import Admin from "@/pages/Admin";
+import Referral from "@/pages/Referral";
 
 // One <Route> per page in src/pages; BrowserRouter already wraps this in main.tsx.
 export default function App() {
@@ -27,6 +29,8 @@ export default function App() {
         <Route path="/app/historico" element={<History />} />
         <Route path="/app/limpeza" element={<Cleanup />} />
         <Route path="/app/sobre" element={<About />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/ref/:code" element={<Referral />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { SignIn } from "@clerk/clerk-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Gauge, History, ShieldCheck, Zap } from "lucide-react";
@@ -11,6 +12,7 @@ import { apiPost, errorDetail, isApiError } from "@/lib/api";
 import { useMe } from "@/lib/queries";
 import { beginSession } from "@/lib/session";
 import type { User } from "@/lib/types";
+import { clerkConfigured } from "@/lib/clerk";
 
 const BULLETS = [
   { icon: Zap, text: "Mais de 250 ajustes reversíveis de CPU, GPU e rede" },
@@ -20,6 +22,13 @@ const BULLETS = [
 ];
 
 export default function Login() {
+  if (clerkConfigured) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background p-6">
+        <SignIn routing="path" path="/login" forceRedirectUrl="/app" fallbackRedirectUrl="/app" />
+      </div>
+    );
+  }
   const me = useMe();
   const navigate = useNavigate();
   const [tab, setTab] = useState<string>("login");

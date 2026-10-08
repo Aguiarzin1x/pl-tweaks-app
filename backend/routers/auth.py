@@ -11,7 +11,10 @@ and delete the guest/demo helpers below — no other module reads users or sessi
 """
 
 import logging
+import os
 import secrets
+import jwt
+import httpx
 import uuid
 from datetime import datetime, timedelta, timezone
 
@@ -19,6 +22,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from passlib.context import CryptContext
 
 from lib.db import db
+from lib.supabase import upsert as supabase_upsert
 from models.auth import UserCreate, UserLogin, UserOut
 
 logger = logging.getLogger(__name__)
@@ -89,29 +93,50 @@ async def _load_user(request: Request) -> dict | None:
     return await db.users.find_one({"id": session["user_id"]})
 
 
-# --- BEGIN Clerk swap zone -------------------------------------------------
-async def get_current_user(request: Request, response: Response) -> dict:
-    """Session dependency. No/invalid session => auto-provision a guest so /app opens the
-    panel directly, no login wall. The cookie rides this same response, so the next
-    request already carries the identity."""
-    user = await _load_user(request)
-    if user:
-        return user
+# --- Clerk authentication ---------------------------------------------------
+async def _clerk_identity(request: Request) -> dict:
+    authorization = request.headers.get("Authorization", "")
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Autenticação Clerk necessária")
+    token = authorization[7:]
+    try:
+        unverified = jwt.decode(token, options={"verify_signature": False})
+        issuer = str(unverified.get("iss", "")).rstrip("/")
+        if not issuer:
+            raise ValueError("issuer ausente")
+        jwks_url = os.getenv("CLERK_JWKS_URL") or f"{issuer}/.well-known/jwks.json"
+        jwks = jwt.PyJWKClient(jwks_url).get_signing_key_from_jwt(token)
+        claims = jwt.decode(token, jwks.key, algorithms=["RS256"], issuer=issuer, options={"require": ["sub", "exp"]})
+    except Exception as exc:
+        logger.warning("Clerk token rejected: %s", exc)
+        raise HTTPException(status_code=401, detail="Sessão Clerk inválida ou expirada") from exc
+    user_id = str(claims["sub"])
+    email = claims.get("email") or claims.get("email_address") or claims.get("primary_email_address")
+    if not email and os.getenv("CLERK_SECRET_KEY"):
+        try:
+            async with httpx.AsyncClient(timeout=8) as client:
+                r = await client.get(f"https://api.clerk.com/v1/users/{user_id}", headers={"Authorization": f"Bearer {os.environ['CLERK_SECRET_KEY']}"})
+                r.raise_for_status()
+                data = r.json()
+                email = ((data.get("email_addresses") or [{}])[0]).get("email_address")
+        except Exception as exc:
+            logger.warning("Could not resolve Clerk email: %s", exc)
+    return {"id": user_id, "email": email or f"{user_id}@clerk.local", "clerk_user_id": user_id, "guest": False}
 
-    tag = uuid.uuid4().hex[:8]
-    user = {
-        "id": str(uuid.uuid4()),
-        "email": f"convidado-{tag}@riptweaks.app",
-        "password": None,
-        "is_premium": False,
-        "guest": True,
-        "created_at": _now(),
-    }
-    await db.users.insert_one(user)
-    await _open_session(response, user["id"])
-    logger.info("guest session provisioned for %s", user["email"])
+async def get_current_user(request: Request, response: Response) -> dict:
+    """Resolve the authenticated Clerk user; never auto-provisions guests."""
+    identity = await _clerk_identity(request)
+    user = await db.users.find_one({"id": identity["id"]})
+    if user is None:
+        user = {**identity, "is_premium": False, "created_at": _now()}
+        await db.users.insert_one(user)
+    else:
+        await db.users.update_one({"id": identity["id"]}, {"$set": {"email": identity["email"], "clerk_user_id": identity["clerk_user_id"]}})
+        user.update(identity)
+    await supabase_upsert("users", {"id": user["id"], "email": user["email"], "clerk_user_id": user["id"], "is_premium": user.get("is_premium", False), "referral_code": user.get("referral_code") or user["id"][:10]})
+    await supabase_upsert("subscriptions", {"user_id": user["id"], "plan": "vip" if user.get("is_premium") else "free", "active": bool(user.get("is_premium"))}, "user_id")
     return user
-# --- END Clerk swap zone ---------------------------------------------------
+# --- END Clerk authentication ----------------------------------------------
 
 
 async def _ensure_demo_user() -> dict:
