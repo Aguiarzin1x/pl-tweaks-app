@@ -1,0 +1,154 @@
+{
+  "theme": "dark",
+  "archetype": "THE PERFORMANCE PRO / TACTICAL GAMER CYBERNETIC",
+  "locale": "pt-BR",
+  "currency": "BRL (R$) e USD ($)",
+  "colors": {
+    "surfaces": [
+      {
+        "name": "page",
+        "kind": "solid",
+        "bg": "#090A0F",
+        "on_bg": "#F1F5F9",
+        "on_bg_muted": "#94A3B8"
+      },
+      {
+        "name": "panel",
+        "kind": "solid",
+        "bg": "#0F131D",
+        "on_bg": "#F8FAFC",
+        "on_bg_muted": "#8E9EB5",
+        "roles": {
+          "border": "#1E293B",
+          "border_glow": "#00F0FF",
+          "link": "#38BDF8",
+          "error": "#EF4444",
+          "success": "#10B981",
+          "warning": "#F59E0B"
+        }
+      },
+      {
+        "name": "card_elevated",
+        "kind": "solid",
+        "bg": "#141926",
+        "on_bg": "#FFFFFF",
+        "on_bg_muted": "#94A3B8"
+      },
+      {
+        "name": "badge_vip",
+        "kind": "solid",
+        "bg": "#1E1B4B",
+        "on_bg": "#C084FC",
+        "on_bg_muted": "#A855F7"
+      },
+      {
+        "name": "badge_cyan",
+        "kind": "solid",
+        "bg": "#083344",
+        "on_bg": "#00F0FF",
+        "on_bg_muted": "#38BDF8"
+      },
+      {
+        "name": "inverse",
+        "kind": "solid",
+        "bg": "#F8FAFC",
+        "on_bg": "#090A0F",
+        "on_bg_muted": "#475569"
+      },
+      {
+        "name": "hero",
+        "kind": "image",
+        "contrast_against": "#090A0F",
+        "guarantee": "scrim: linear-gradient(180deg, rgba(9,10,15,0.78) 0%, rgba(9,10,15,0.95) 100%)",
+        "on_bg": "#FFFFFF",
+        "on_bg_muted": "#94A3B8",
+        "roles": {
+          "link": "#00F0FF",
+          "error": "#EF4444",
+          "success": "#10B981"
+        }
+      },
+      {
+        "name": "glass_header",
+        "kind": "glass",
+        "contrast_against": "#0B0E17",
+        "guarantee": "backdrop-blur-xl bg-[#090A0F]/85 border-b border-[#1E293B]/70",
+        "on_bg": "#F8FAFC",
+        "on_bg_muted": "#94A3B8",
+        "roles": {
+          "link": "#00F0FF"
+        }
+      }
+    ],
+    "accent": "#00F0FF",
+    "on_accent": "#090A0F",
+    "accent_subtle": "#00F0FF22",
+    "accent_secondary": "#A855F7",
+    "on_accent_secondary": "#FFFFFF"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Sora Variable",
+      "sans": "DM Sans Variable",
+      "mono": "JetBrains Mono Variable"
+    },
+    "scale_px": {
+      "display": 56,
+      "h1": 44,
+      "h2": 32,
+      "h3": 22,
+      "body": 16,
+      "caption": 14
+    },
+    "typesetting": {
+      "heading_tracking": "tracking-tight",
+      "mono_labels": "tracking-wider uppercase text-xs font-mono",
+      "body_line_height": "leading-relaxed"
+    }
+  },
+  "entry_surfaces": {
+    "/": "tactical gaming landing hero with glowing cybernetic HUD visual, feature bento grid, and direct CTA to /app",
+    "/app": "command center layout with tactical left sidebar, telemetry header, SVG optimization dial, quick RIP actions, game profile cards, tweak manager tabs, and hardware specs drawer",
+    "/login": "tactical obsidian auth card with cyan neon accents, positioning pitch on left, instant guest access bypass button, and email login option"
+  },
+  "grids": {
+    "dashboard_bento": "grid grid-cols-1 md:grid-cols-12 gap-5",
+    "telemetry_row": "grid grid-cols-2 md:grid-cols-4 gap-4",
+    "game_cards_grid": "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4",
+    "tweaks_grid": "grid grid-cols-1 md:grid-cols-2 gap-3"
+  },
+  "motion": {
+    "gauge_transition": "transition-all duration-700 ease-out",
+    "card_hover": "hover:-translate-y-1 hover:border-[#00F0FF]/50 transition duration-200",
+    "button_press": "active:scale-[0.98] transition-transform duration-100",
+    "rip_pulse": "animate-pulse"
+  },
+  "accessibility": {
+    "focus_ring": "focus-visible:ring-2 focus-visible:ring-[#00F0FF] focus-visible:outline-none",
+    "contrast_target": "WCAG AA minimum 4.5:1 on all text surfaces",
+    "prefers_reduced_motion": "respect motion query for HUD sweeps and gauge spins",
+    "data_testids": "required on all tabs, toggles, buttons, gauges, and game preset cards"
+  },
+  "component_path": {
+    "css_entry": "/app/frontend/src/index.css",
+    "app_shell": "/app/frontend/src/App.tsx",
+    "sidebar": "/app/frontend/src/components/Sidebar.tsx",
+    "dashboard": "/app/frontend/src/pages/Dashboard.tsx",
+    "landing": "/app/frontend/src/pages/Home.tsx",
+    "login": "/app/frontend/src/pages/Login.tsx",
+    "ui_components": "/app/frontend/src/components/ui/"
+  },
+  "instructions_to_main_agent": [
+    "1. Backend: Remove mandatory local MongoDB connection failure. Use robust JSON-file fallback storage in backend/lib/db.py and server.py so the server boots instantly with 0ms delay without Mongo.",
+    "2. Routing: Ensure http://localhost:3000/app loads instantly without login wall or stuck loader, auto-creating/attaching a local guest session if none exists.",
+    "3. Keep the full tactical gamer visual identity: Dark obsidian (#090A0F) background, neon cyan (#00F0FF) telemetry highlights, Sora headings, DM Sans body, JetBrains Mono gauges.",
+    "4. All operational dashboard modules must be fully interactive: Telemetry gauges, SVG optimization ring, RIP Mode countdown modal, Restore Points, Game preset cards (Fortnite, Valorant, CS2, Warzone, Roblox, Minecraft), 50-tweak catalog with category filters, Benchmark simulator, Action history restore, and Hardware detection.",
+    "5. Maintain clean project structure prepared for future Supabase DB and Clerk auth integration."
+  ],
+  "UNIVERSAL GUIDELINES FOR MAIN AGENT": {
+    "design_tone": "Tactical cybernetic command-center for high-performance PC optimization (pt-BR locale)",
+    "no_ai_emojis": "Use lucide-react tactical icons (Activity, Zap, Shield, Cpu, Gauge, Terminal, Flame, RefreshCw, Crosshair), never 🤖 or 💡",
+    "glass_and_glow": "Use 1px borders with border-[#1E293B] and hover:border-[#00F0FF]/40 with cyan subtle drop-shadows",
+    "data_testids": "Include descriptive data-testid on every interactive element (e.g. data-testid='sidebar-nav-jogos', data-testid='toggle-tweak-gpu-boost', data-testid='rip-mode-trigger-button')"
+  }
+}
