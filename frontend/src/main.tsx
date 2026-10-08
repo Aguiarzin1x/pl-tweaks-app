@@ -33,7 +33,7 @@ function Root() {
       </BrowserRouter>
     </QueryClientProvider>
   )
-  return clerkConfigured ? <ClerkProvider publishableKey={clerkPublishableKey} signInFallbackRedirectUrl="/app" signUpFallbackRedirectUrl="/app">{app}</ClerkProvider> : app
+  return clerkConfigured ? <ClerkProvider publishableKey={clerkPublishableKey} signInForceRedirectUrl="/app" signUpForceRedirectUrl="/app" signInFallbackRedirectUrl="/app" signUpFallbackRedirectUrl="/app">{app}</ClerkProvider> : app
 }
 
 createRoot(document.getElementById('root')!).render(
