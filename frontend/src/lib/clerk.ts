@@ -17,9 +17,5 @@ export function ClerkTokenBridge() {
   return null;
 }
 const publicEnv = import.meta.env as Record<string, string | undefined>;
-export const clerkPublishableKey = (
-  publicEnv.VITE_CLERK_PUBLISHABLE_KEY ||
-  publicEnv.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ||
-  ""
-).trim();
+export const clerkPublishableKey = (publicEnv.VITE_CLERK_PUBLISHABLE_KEY || "").trim();
 export const clerkConfigured = clerkPublishableKey.startsWith("pk_");
