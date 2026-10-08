@@ -109,10 +109,10 @@ export default function AppShell({ children }: { children: ReactNode }) {
         <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-sidebar lg:flex">
           <Link to="/" className="flex h-16 items-center gap-2.5 border-b border-border px-5">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-heading text-xs font-black text-primary-foreground">
-              RIP
+              PL
             </span>
             <span className="font-heading font-bold tracking-tight">
-              RIP <span className="text-primary">TWEAKS</span>
+              PL <span className="text-primary">TWEAKS</span>
             </span>
           </Link>
           <nav className="flex-1 space-y-1 p-3" data-testid="app-sidebar">
@@ -275,7 +275,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
 
           <footer className="border-t border-border px-6 py-3 text-center text-xs text-muted-foreground">
             <Gauge className="mr-1 inline size-3.5 text-primary" />
-            RIP Tweaks — 100% reversível • Ponto de restauração sempre ativo
+            PL Tweaks — 100% reversível • Ponto de restauração sempre ativo
           </footer>
         </div>
 

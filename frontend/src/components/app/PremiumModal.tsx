@@ -50,7 +50,7 @@ export default function PremiumModal({ open, onOpenChange }: Props) {
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 font-heading">
             <Crown className="size-5 text-amber-400" />
-            Desbloquear o RIP Tweaks Premium
+            Desbloquear o PL Tweaks Premium
           </DialogTitle>
           <DialogDescription>
             Ajustes avançados de GPU, BIOS, rede e isolamento competitivo — tudo liberado na hora.
