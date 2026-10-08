@@ -1,0 +1,73 @@
+{
+  "iteration": 1,
+  "passed": 9,
+  "failed": 0,
+  "bugs": [],
+  "action_items": [],
+  "retest_needed": false,
+  "checks": [
+    {
+      "criterion": "Backend: GET /api/tweaks/commands returns total=50 with kind/apply/revert/requires_admin/requires_reboot on every item; specific item and 404 behavior",
+      "name": "test_tscheck_tweaks_commands_endpoint.py",
+      "lane": "backend",
+      "status": "passed",
+      "evidence": "GET /api/tweaks/commands -> 200, total=50, all 50 items have required fields. GET /api/tweaks/commands/game-bar-dvr-off -> 200, kind='registry', apply contains 'reg add ...GameDVR...'. GET /api/tweaks/commands/chave-invalida -> 404. pytest: 3 passed in 0.72s"
+    },
+    {
+      "criterion": "Página 'Sobre Nós' exibe o heading h3 'Input Lag Nunca Mais!' e remove o texto antigo",
+      "name": "about-page-input-lag-pillar",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Heading 'Input Lag Nunca Mais!' visible; full body text does not contain 'Input lag é a nossa obsessão'; other two pillar headings also visible."
+    },
+    {
+      "criterion": "Os outros dois pilares (Alta performance de verdade / 100% reversível, zero risco) continuam intactos",
+      "name": "about-page-input-lag-pillar",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Covered in same check: both headings asserted visible alongside the renamed pillar."
+    },
+    {
+      "criterion": "Cartão do Discord com link oficial https://discord.gg/jpHaNTfJH5 abrindo em nova aba",
+      "name": "about-page-discord-card",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "data-testid=about-discord-link href='https://discord.gg/jpHaNTfJH5', target='_blank'."
+    },
+    {
+      "criterion": "Cartão do TikTok com handle @plotimizacao, nota 4,9/5, link correto e 4 cartões de feedback",
+      "name": "about-page-tiktok-card",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "about-tiktok-handle='@plotimizacao', '4,9/5' visible, about-tiktok-link href='https://www.tiktok.com/@plotimizacao', 4 elements matching [data-testid^='about-review-']."
+    },
+    {
+      "criterion": "Item 'Sobre Nós' na sidebar navega para /app/sobre",
+      "name": "sidebar-navigates-to-about",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Clicked sidebar item inside app-sidebar; URL became /app/sobre and about-page rendered."
+    },
+    {
+      "criterion": "Banners visuais e taglines nos 6 cards de jogos (fortnite, valorant, cs2, warzone, roblox, minecraft)",
+      "name": "games-page-banners-load",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "For each of 6 ids, game-banner-<id> visible with naturalWidth>0 and game-tagline-<id> visible."
+    },
+    {
+      "criterion": "Aplicar preset de jogo continua funcionando (toast + system-status-pill atualiza)",
+      "name": "game-preset-apply-updates-status",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "Clicked game-preset-apply-fortnite; success toast containing 'aplicad' appeared; system-status-pill text changed from its prior value."
+    },
+    {
+      "criterion": "Sanity check of 'Sobre Nós' heading via public preview ingress URL",
+      "name": "about-page-preview-url",
+      "lane": "browser",
+      "status": "passed",
+      "evidence": "https://instant-load-app-1.preview.emergentagent.com/app/sobre renders about-page with heading 'Input Lag Nunca Mais!' visible."
+    }
+  ]
+}

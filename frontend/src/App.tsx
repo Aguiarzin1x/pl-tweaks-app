@@ -9,6 +9,7 @@ import Hardware from "@/pages/app/Hardware";
 import Benchmark from "@/pages/app/Benchmark";
 import History from "@/pages/app/History";
 import Cleanup from "@/pages/app/Cleanup";
+import About from "@/pages/app/About";
 
 // One <Route> per page in src/pages; BrowserRouter already wraps this in main.tsx.
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/app/benchmark" element={<Benchmark />} />
         <Route path="/app/historico" element={<History />} />
         <Route path="/app/limpeza" element={<Cleanup />} />
+        <Route path="/app/sobre" element={<About />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

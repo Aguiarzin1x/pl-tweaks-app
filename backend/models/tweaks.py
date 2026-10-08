@@ -28,6 +28,29 @@ class GamePresetOut(BaseModel):
     gain_pct: int
     baseline_fps: int
     keys: List[str]
+    # Arte de capa servida de frontend/public/games/<id>.jpg
+    banner: str = ""
+    tagline: str = ""
+
+
+class TweakCommands(BaseModel):
+    """Comandos reais do Windows de um tweak — consumidos pelo EXECUTÁVEL futuro, nunca
+    executados por este backend (o app web só simula estado)."""
+
+    key: str
+    name: str
+    category: str
+    kind: str  # "registry" | "powershell" | "cmd" | "bcdedit" | "service" | "manual"
+    apply: List[str]
+    revert: List[str]
+    requires_admin: bool
+    requires_reboot: bool
+    note: str = ""
+
+
+class CommandsOut(BaseModel):
+    total: int
+    tweaks: List[TweakCommands]
 
 
 class CatalogOut(BaseModel):

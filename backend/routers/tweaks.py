@@ -1,20 +1,23 @@
-"""Tweak catalog + per-user optimization state. State persists in Mongo per logged-in user.
+"""Tweak catalog + per-user optimization state. State persists per logged-in user.
 Every mutation is logged to the action timeline via lib/state.save_and_log."""
 
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException
 
-from lib.catalog import GAME_BY_ID, RIP_PACKAGE, TWEAK_BY_KEY, catalog_out
+from lib.catalog import GAME_BY_ID, RIP_PACKAGE, TWEAK_BY_KEY, TWEAKS, catalog_out
+from lib.commands import commands_for
 from lib.db import db
 from lib.state import load_state, metrics, save_and_log, state_out
 from models.tweaks import (
     CatalogOut,
+    CommandsOut,
     PresetRequest,
     PresetResult,
     RipModeRequest,
     StateOut,
     ToggleRequest,
+    TweakCommands,
     VipOut,
 )
 from routers.auth import get_current_user
@@ -24,9 +27,40 @@ logger = logging.getLogger(__name__)
 router = APIRouter(tags=["tweaks"])
 
 
+def _tweak_commands(tweak: dict) -> TweakCommands:
+    cmd = commands_for(tweak["key"])
+    return TweakCommands(
+        key=tweak["key"],
+        name=tweak["name"],
+        category=tweak["category"],
+        kind=cmd["kind"],
+        apply=cmd["apply"],
+        revert=cmd["revert"],
+        requires_admin=cmd["requires_admin"],
+        requires_reboot=cmd["requires_reboot"],
+        note=cmd.get("note", ""),
+    )
+
+
 @router.get("/tweaks/catalog", response_model=CatalogOut)
 async def get_catalog():
     return catalog_out()
+
+
+@router.get("/tweaks/commands", response_model=CommandsOut)
+async def get_all_commands():
+    """Catálogo de comandos do Windows para o executável nativo. O app web NÃO executa
+    nada disso — aqui ele é apenas servido."""
+    items = [_tweak_commands(t) for t in TWEAKS]
+    return CommandsOut(total=len(items), tweaks=items)
+
+
+@router.get("/tweaks/commands/{key}", response_model=TweakCommands)
+async def get_commands_for_key(key: str):
+    tweak = TWEAK_BY_KEY.get(key)
+    if tweak is None:
+        raise HTTPException(status_code=404, detail="Ajuste não encontrado")
+    return _tweak_commands(tweak)
 
 
 @router.get("/tweaks/state", response_model=StateOut)

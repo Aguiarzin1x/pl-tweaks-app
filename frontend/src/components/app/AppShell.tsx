@@ -13,6 +13,7 @@ import {
   Cpu,
   SlidersHorizontal,
   Timer,
+  Users,
   Zap,
 } from "lucide-react";
 
@@ -52,6 +53,7 @@ const NAV = [
   { to: "/app/benchmark", label: "Benchmark", icon: Timer },
   { to: "/app/historico", label: "Histórico", icon: History },
   { to: "/app/limpeza", label: "Limpeza", icon: CalendarClock },
+  { to: "/app/sobre", label: "Sobre Nós", icon: Users },
 ];
 
 function statusPill(pct: number, applied: number, total: number) {

@@ -32,6 +32,8 @@ export interface GamePreset {
   gain_pct: number;
   baseline_fps: number;
   keys: string[];
+  banner: string;
+  tagline: string;
 }
 
 export interface Catalog {

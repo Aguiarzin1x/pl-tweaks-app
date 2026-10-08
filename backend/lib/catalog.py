@@ -91,12 +91,12 @@ TWEAKS: List[dict] = [
 ]
 
 GAMES: List[dict] = [
-    {"id": "fortnite", "name": "Fortnite", "gain_pct": 115, "baseline_fps": 95, "keys": ["core-parking-unpark", "gpu-scheduling-hags", "background-apps-off", "game-bar-dvr-off", "tcp-nodelay", "usb-polling-1000", "timer-resolution-0-5ms", "rip-mode-core"]},
-    {"id": "valorant", "name": "Valorant", "gain_pct": 125, "baseline_fps": 165, "keys": ["cpu-priority-gaming", "pointer-accel-off", "usb-polling-1000", "tcp-nodelay", "telemetry-disable", "timer-resolution-0-5ms", "focus-assist-gaming"]},
-    {"id": "cs2", "name": "Counter-Strike 2", "gain_pct": 115, "baseline_fps": 145, "keys": ["core-parking-unpark", "gpu-scheduling-hags", "nvidia-low-latency", "usb-polling-1000", "tcp-nodelay", "prerendered-frames-1"]},
-    {"id": "warzone", "name": "Warzone", "gain_pct": 135, "baseline_fps": 90, "keys": ["ram-standby-clean", "gpu-scheduling-hags", "background-apps-off", "tcp-nodelay", "dns-optimized", "shader-cache-warm"]},
-    {"id": "roblox", "name": "Roblox", "gain_pct": 155, "baseline_fps": 60, "keys": ["visual-effects-performance", "background-apps-off", "power-plan-extreme", "network-throttling-off", "startup-clean", "game-mode-on"]},
-    {"id": "minecraft", "name": "Minecraft", "gain_pct": 125, "baseline_fps": 75, "keys": ["superfetch-off", "startup-clean", "ram-standby-clean", "search-index-off", "game-mode-on", "updates-deferral"]},
+    {"id": "fortnite", "name": "Fortnite", "gain_pct": 115, "baseline_fps": 95, "banner": "/games/fortnite.jpg", "tagline": "Construção instantânea e zero stutter nas builds", "keys": ["core-parking-unpark", "gpu-scheduling-hags", "background-apps-off", "game-bar-dvr-off", "tcp-nodelay", "usb-polling-1000", "timer-resolution-0-5ms", "rip-mode-core"]},
+    {"id": "valorant", "name": "Valorant", "gain_pct": 125, "baseline_fps": 165, "banner": "/games/valorant.jpg", "tagline": "Peek vantajoso: cada clique registra na hora", "keys": ["cpu-priority-gaming", "pointer-accel-off", "usb-polling-1000", "tcp-nodelay", "telemetry-disable", "timer-resolution-0-5ms", "focus-assist-gaming"]},
+    {"id": "cs2", "name": "Counter-Strike 2", "gain_pct": 115, "baseline_fps": 145, "banner": "/games/cs2.jpg", "tagline": "Spray control sem engasgo e tick perfeito", "keys": ["core-parking-unpark", "gpu-scheduling-hags", "nvidia-low-latency", "usb-polling-1000", "tcp-nodelay", "prerendered-frames-1"]},
+    {"id": "warzone", "name": "Warzone", "gain_pct": 135, "baseline_fps": 90, "banner": "/games/warzone.jpg", "tagline": "Carregamento rápido e FPS estável na gulag", "keys": ["ram-standby-clean", "gpu-scheduling-hags", "background-apps-off", "tcp-nodelay", "dns-optimized", "shader-cache-warm"]},
+    {"id": "roblox", "name": "Roblox", "gain_pct": 155, "baseline_fps": 60, "banner": "/games/roblox.jpg", "tagline": "Roda liso até em PC simples e notebook", "keys": ["visual-effects-performance", "background-apps-off", "power-plan-extreme", "network-throttling-off", "startup-clean", "game-mode-on"]},
+    {"id": "minecraft", "name": "Minecraft", "gain_pct": 125, "baseline_fps": 75, "banner": "/games/minecraft.jpg", "tagline": "Mais chunks por segundo, menos travadas", "keys": ["superfetch-off", "startup-clean", "ram-standby-clean", "search-index-off", "game-mode-on", "updates-deferral"]},
 ]
 
 # RIP Mode: the max-FPS package applied in one click (all free — every user gets the turbo).

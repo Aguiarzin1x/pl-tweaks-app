@@ -53,6 +53,21 @@ nenhum outro módulo lê users/sessions.
    snapshot completo + "Restaurar aqui" (`POST /api/history/restore/{id}`).
 9. **Limpeza `/app/limpeza`** — agendamento simulado (diária/semanal, dia, horário); catch-up
    materializa limpezas vencidas na leitura de `GET /api/cleanup` (máx. 12).
+10. **Sobre Nós `/app/sobre`** — apresentação da PL Otimização (foco em alta performance e
+    input lag), 3 pilares, cards de **Discord** (https://discord.gg/jpHaNTfJH5) e **TikTok**
+    (@plotimizacao, nota 4,9/5), grade de 4 feedbacks de clientes e CTA para o Premium.
+    Conteúdo estático no componente — não vem da API.
+
+## Comandos do Windows (para o executável futuro)
+
+`backend/lib/commands.py` mapeia **as 50 chaves** de tweak para os comandos reais:
+`kind` ("registry" | "powershell" | "cmd" | "bcdedit" | "service" | "manual"), `apply[]`,
+`revert[]`, `requires_admin`, `requires_reboot`, `note`. Servido em
+`GET /api/tweaks/commands` e `GET /api/tweaks/commands/{key}`.
+**Este backend NUNCA executa esses comandos** — o app web só grava estado simulado; o
+catálogo existe para o cliente nativo (C#/Rust) consumir. Tweaks sem API pública
+(BIOS/XMP, NVAPI, curva de ventoinha, polling rate) ficam como `kind: "manual"` com o
+passo a passo que o executável deve exibir.
 
 ## Regras de negócio
 
@@ -70,7 +85,9 @@ nenhum outro módulo lê users/sessions.
 - `POST /auth/signup` (201) · `POST /auth/login` · `GET /auth/me` (auto-convidado, nunca 401)
   · `POST /auth/logout` (204) — cookie `rip_session` httpOnly, 30 dias, na collection `sessions`.
   Resposta: `{id, email, is_premium, is_guest}`.
-- `GET /tweaks/catalog` (público) · `GET /tweaks/state` · `POST /tweaks/toggle {key, applied}`
+- `GET /tweaks/catalog` (público) · `GET /tweaks/commands` + `GET /tweaks/commands/{key}`
+  (públicos — comandos Windows p/ o executável) · `GET /tweaks/state`
+  · `POST /tweaks/toggle {key, applied}`
   · `POST /tweaks/preset {game_id}` · `POST /tweaks/rip-mode {active}` · `POST /tweaks/restore`
   · `POST /vip/activate`.
 - `GET /hardware/profile` · `POST /hardware/detect {sinais}` (IA, timeout 45s → fallback regras)
