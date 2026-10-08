@@ -8,6 +8,7 @@ import {
   Gauge,
   History,
   LayoutDashboard,
+  LogIn,
   LogOut,
   Cpu,
   SlidersHorizontal,
@@ -75,7 +76,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-h-screen items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-4">
           <span className="flex size-12 animate-pulse items-center justify-center rounded-xl bg-primary font-heading text-sm font-black text-primary-foreground">
-            RIP
+            PL
           </span>
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted-foreground">
             Conectando ao seu PC…
@@ -90,6 +91,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
   }
 
   const isPremium = me.data?.is_premium ?? false;
+  const isGuest = me.data?.is_guest ?? false;
   const metrics = state.data?.metrics;
   const pill = statusPill(metrics?.optimization_pct ?? 0, metrics?.applied ?? 0, metrics?.total ?? 50);
 
@@ -138,7 +140,7 @@ export default function AppShell({ children }: { children: ReactNode }) {
             <div className="m-3 rounded-xl border border-primary/25 bg-primary/5 p-4">
               <div className="flex items-center gap-2">
                 <Crown className="size-4 text-amber-400" />
-                <p className="font-heading text-sm font-bold">RIP Premium</p>
+                <p className="font-heading text-sm font-bold">PL Premium</p>
               </div>
               <p className="mt-1.5 text-xs text-muted-foreground">
                 Libere os ajustes avançados de GPU, BIOS e rede.
@@ -220,27 +222,41 @@ export default function AppShell({ children }: { children: ReactNode }) {
                   data-testid="user-menu-button"
                   className="flex size-9 items-center justify-center rounded-full border border-border bg-card font-heading text-xs font-bold text-primary transition-colors hover:border-primary/40"
                 >
-                  {(me.data?.email ?? "?").slice(0, 2).toUpperCase()}
+                  {isGuest ? "CV" : (me.data?.email ?? "?").slice(0, 2).toUpperCase()}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <div className="border-b border-border px-3 py-2">
                     <p className="truncate text-sm font-bold" data-testid="user-menu-email">
-                      {me.data?.email}
+                      {isGuest ? "Convidado" : me.data?.email}
                     </p>
                     <p className="text-xs text-muted-foreground">
-                      {isPremium ? "Assinante Premium" : "Conta gratuita"}
+                      {isPremium
+                        ? "Assinante Premium"
+                        : isGuest
+                          ? "Progresso salvo neste navegador"
+                          : "Conta gratuita"}
                     </p>
                   </div>
-                  <DropdownMenuItem
-                    data-testid="logout-button"
-                    className="text-red-300"
-                    onClick={() => {
-                      void endSession("/login");
-                    }}
-                  >
-                    <LogOut className="size-4" />
-                    Sair da conta
-                  </DropdownMenuItem>
+                  {isGuest ? (
+                    <DropdownMenuItem
+                      data-testid="guest-signin-button"
+                      onClick={() => navigate("/login")}
+                    >
+                      <LogIn className="size-4" />
+                      Entrar ou criar conta
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem
+                      data-testid="logout-button"
+                      className="text-red-300"
+                      onClick={() => {
+                        void endSession("/login");
+                      }}
+                    >
+                      <LogOut className="size-4" />
+                      Sair da conta
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>

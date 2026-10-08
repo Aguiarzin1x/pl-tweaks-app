@@ -10,7 +10,7 @@ const FAQS = [
   },
   {
     q: "Posso ser banido nos jogos?",
-    a: "Não. O RIP Tweaks não injeta código nos jogos, não modifica arquivos de jogo e não usa drivers de kernel — zero interação com Vanguard, EasyAntiCheat e BattlEye.",
+    a: "Não. O PL Tweaks não injeta código nos jogos, não modifica arquivos de jogo e não usa drivers de kernel — zero interação com Vanguard, EasyAntiCheat e BattlEye.",
   },
   {
     q: "Funciona no meu PC?",
@@ -81,7 +81,7 @@ export default function FaqFooter() {
             <div className="max-w-sm">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary font-heading text-xs font-black text-primary-foreground">
-                  RIP
+                  PL
                 </span>
                 <span className="font-heading font-bold">
                   PL <span className="text-primary">TWEAKS</span>
@@ -123,11 +123,11 @@ export default function FaqFooter() {
           </div>
           <div className="mt-10 border-t border-white/10 pt-6 text-xs leading-relaxed text-muted-foreground">
             <p>
-              Clone educacional do RIP Tweaks. Não afiliado à Riot Games, Epic Games, Activision,
+              Clone educacional do PL Tweaks. Não afiliado à Riot Games, Epic Games, Activision,
               Valve, Microsoft ou Mojang. Fortnite, Valorant, Counter-Strike, Warzone, Roblox e
               Minecraft pertencem aos seus respectivos proprietários.
             </p>
-            <p className="mt-2">© 2026 RIP Tweaks — demonstração de produto.</p>
+            <p className="mt-2">© 2026 PL Tweaks — demonstração de produto.</p>
           </div>
         </div>
       </footer>

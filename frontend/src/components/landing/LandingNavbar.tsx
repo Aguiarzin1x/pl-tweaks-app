@@ -17,7 +17,7 @@ export default function LandingNavbar() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2.5" data-testid="landing-logo-link">
           <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-sm font-black tracking-tighter text-primary-foreground glow-cyan">
-            RIP
+            PL
           </span>
           <span className="font-heading text-lg font-bold tracking-tight">
             PL <span className="text-primary">TWEAKS</span>

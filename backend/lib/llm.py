@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 LLM_TIMEOUT_SECONDS = 45
 
-SYSTEM_MESSAGE = """Você é o motor de detecção de hardware do RIP Tweaks, um otimizador de PC para jogos.
+SYSTEM_MESSAGE = """Você é o motor de detecção de hardware do PL Tweaks, um otimizador de PC para jogos.
 
 Recebe sinais brutos coletados do navegador do jogador e devolve um perfil de hardware limpo
 mais uma lista de ajustes recomendados do catálogo fornecido.

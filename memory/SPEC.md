@@ -18,6 +18,13 @@ provisiona automaticamente uma **conta convidado + cookie httpOnly** na primeira
 `/app` abre o painel direto, sem redirecionar para login. `/login` continua funcional
 (e-mail+senha) e tem botão "Entrar com a conta demo".
 
+**`is_guest` é a chave da UX de convidado.** `UserOut` expõe `is_guest` (espelhado em
+`frontend/src/lib/types.ts::User`). Como `/auth/me` nunca mais devolve 401, o guard de
+`/login` **precisa** checar `me.isSuccess && !me.data.is_guest` — checar só `isSuccess`
+torna `/login` inacessível (bug já corrigido). No AppShell o convidado vê "Convidado /
+Progresso salvo neste navegador" + item "Entrar ou criar conta"; conta real vê o e-mail +
+"Sair da conta".
+
 **Ponto de troca Clerk**: substituir `get_current_user` em `backend/routers/auth.py` por
 verificação de sessão Clerk retornando o mesmo dict `{"id", "email", "is_premium"}` —
 nenhum outro módulo lê users/sessions.
@@ -62,6 +69,7 @@ nenhum outro módulo lê users/sessions.
 
 - `POST /auth/signup` (201) · `POST /auth/login` · `GET /auth/me` (auto-convidado, nunca 401)
   · `POST /auth/logout` (204) — cookie `rip_session` httpOnly, 30 dias, na collection `sessions`.
+  Resposta: `{id, email, is_premium, is_guest}`.
 - `GET /tweaks/catalog` (público) · `GET /tweaks/state` · `POST /tweaks/toggle {key, applied}`
   · `POST /tweaks/preset {game_id}` · `POST /tweaks/rip-mode {active}` · `POST /tweaks/restore`
   · `POST /vip/activate`.

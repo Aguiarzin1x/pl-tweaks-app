@@ -50,7 +50,12 @@ def _now() -> datetime:
 
 
 def _serialize(user: dict) -> UserOut:
-    return UserOut(id=user["id"], email=user["email"], is_premium=user.get("is_premium", False))
+    return UserOut(
+        id=user["id"],
+        email=user["email"],
+        is_premium=user.get("is_premium", False),
+        is_guest=user.get("guest", False),
+    )
 
 
 async def _open_session(response: Response, user_id: str) -> None:

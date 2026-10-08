@@ -5,6 +5,7 @@ export interface User {
   id: string;
   email: string;
   is_premium: boolean;
+  is_guest: boolean;
 }
 
 export interface TweakCategory {

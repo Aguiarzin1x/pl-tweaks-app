@@ -17,3 +17,6 @@ class UserOut(BaseModel):
     id: str
     email: str
     is_premium: bool
+    # A guest is an auto-provisioned account (no password): the app treats it as "not
+    # signed in" for UI purposes, so /login stays reachable and offers an upgrade path.
+    is_guest: bool = False

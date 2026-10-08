@@ -59,7 +59,7 @@ export default function Features() {
             FPS é só metade da batalha
           </h2>
           <p className="mt-3 text-muted-foreground">
-            FPS alto não significa nada se os cliques atrasam. O RIP Tweaks remove o lixo que segura
+            FPS alto não significa nada se os cliques atrasam. O PL Tweaks remove o lixo que segura
             o seu hardware e derruba a latência do sistema ao mínimo absoluto.
           </p>
         </div>
@@ -127,7 +127,7 @@ export default function Features() {
               Seguro por design
             </h2>
             <p className="mt-3 text-muted-foreground">
-              O RIP Tweaks ajusta o Windows e o seu hardware, nunca os seus jogos. Sem hacks
+              O PL Tweaks ajusta o Windows e o seu hardware, nunca os seus jogos. Sem hacks
               arriscados, sem surpresas e nada que você não possa desfazer.
             </p>
             <div className="mt-8 grid gap-5 sm:grid-cols-2">

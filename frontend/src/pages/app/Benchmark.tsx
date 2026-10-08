@@ -178,7 +178,7 @@ function BenchmarkContent() {
                 </div>
                 <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
                   <p className="font-mono text-xs uppercase tracking-widest text-primary">
-                    Com RIP Tweaks
+                    Com PL Tweaks
                   </p>
                   <p className="mt-1 font-mono text-2xl font-bold text-primary" data-testid="benchmark-result-fps">
                     {result.result_fps} FPS

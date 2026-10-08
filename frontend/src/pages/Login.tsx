@@ -27,7 +27,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [pending, setPending] = useState(false);
 
-  if (me.isSuccess) return <Navigate to="/app" replace />;
+  // A guest session is auto-provisioned for everyone (so /app needs no login), so it must
+  // NOT count as "already signed in" — only a real account redirects away from /login.
+  if (me.isSuccess && !me.data.is_guest) return <Navigate to="/app" replace />;
 
   const submit = async (mode: "login" | "signup") => {
     setPending(true);
@@ -81,10 +83,10 @@ export default function Login() {
         <div className="relative flex h-full flex-col justify-between p-10">
           <div className="flex items-center gap-2.5">
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-sm font-black text-primary-foreground">
-              RIP
+              PL
             </span>
             <span className="font-heading text-lg font-bold">
-              RIP <span className="text-primary">TWEAKS</span>
+              PL <span className="text-primary">TWEAKS</span>
             </span>
           </div>
           <div>
@@ -115,9 +117,9 @@ export default function Login() {
         <div className="w-full max-w-md">
           <div className="mb-8 flex items-center gap-2.5 lg:hidden">
             <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary font-heading text-sm font-black text-primary-foreground">
-              RIP
+              PL
             </span>
-            <span className="font-heading text-lg font-bold">RIP TWEAKS</span>
+            <span className="font-heading text-lg font-bold">PL TWEAKS</span>
           </div>
 
           <h1 className="font-heading text-2xl font-bold tracking-tight" data-testid="auth-heading">

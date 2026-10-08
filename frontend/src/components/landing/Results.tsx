@@ -61,7 +61,7 @@ function SliderSection() {
       />
       <div className="flex justify-between font-mono text-xs uppercase tracking-widest text-muted-foreground">
         <span>PC padrão</span>
-        <span>RIP Tweaks</span>
+        <span>PL Tweaks</span>
       </div>
     </div>
   );
@@ -76,7 +76,7 @@ export default function Results() {
           Resultados reais
         </h2>
         <p className="mt-3 text-muted-foreground">
-          Sinta a diferença entre um PC padrão e uma máquina ajustada pelo RIP Tweaks. Vamos além
+          Sinta a diferença entre um PC padrão e uma máquina ajustada pelo PL Tweaks. Vamos além
           de empurrar o FPS máximo — estabilizamos seus 1% lows para eliminar os travamentos.
         </p>
       </div>

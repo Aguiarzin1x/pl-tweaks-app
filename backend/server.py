@@ -45,7 +45,7 @@ class StatusCheckCreate(BaseModel):
 
 @api_router.get("/")
 async def root():
-    return {"message": "Hello World", "app": "RIP Tweaks"}
+    return {"message": "Hello World", "app": "PL Tweaks"}
 
 
 @api_router.post("/status", response_model=StatusCheck)
