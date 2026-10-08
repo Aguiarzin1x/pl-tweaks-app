@@ -6,7 +6,21 @@ export function setClerkTokenGetter(getter: (() => Promise<string | null>) | nul
   tokenGetter = getter;
 }
 export async function getClerkToken(): Promise<string | null> {
-  return tokenGetter ? tokenGetter() : null;
+  if (!tokenGetter) return null;
+  let timer: number | undefined;
+  try {
+    return await Promise.race([
+      tokenGetter(),
+      new Promise<null>((resolve) => {
+        timer = window.setTimeout(() => {
+          console.warn("[PL TWEAKS] Clerk getToken excedeu 8s; a sessão pode estar indisponível neste domínio.");
+          resolve(null);
+        }, 8000);
+      }),
+    ]);
+  } finally {
+    if (timer !== undefined) window.clearTimeout(timer);
+  }
 }
 export function ClerkTokenBridge() {
   const { getToken } = useAuth();

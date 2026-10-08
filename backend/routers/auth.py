@@ -10,6 +10,7 @@ When Clerk lands: replace `get_current_user` with Clerk's session verification (
 and delete the guest/demo helpers below — no other module reads users or sessions.
 """
 
+import asyncio
 import logging
 import os
 import secrets
@@ -133,8 +134,10 @@ async def get_current_user(request: Request, response: Response) -> dict:
     else:
         await db.users.update_one({"id": identity["id"]}, {"$set": {"email": identity["email"], "clerk_user_id": identity["clerk_user_id"]}})
         user.update(identity)
-    await supabase_upsert("users", {"id": user["id"], "email": user["email"], "clerk_user_id": user["id"], "is_premium": user.get("is_premium", False), "referral_code": user.get("referral_code") or user["id"][:10]})
-    await supabase_upsert("subscriptions", {"user_id": user["id"], "plan": "vip" if user.get("is_premium") else "free", "active": bool(user.get("is_premium"))}, "user_id")
+    await asyncio.gather(
+        supabase_upsert("users", {"id": user["id"], "email": user["email"], "clerk_user_id": user["id"], "is_premium": user.get("is_premium", False), "referral_code": user.get("referral_code") or user["id"][:10]}),
+        supabase_upsert("subscriptions", {"user_id": user["id"], "plan": "vip" if user.get("is_premium") else "free", "active": bool(user.get("is_premium"))}, "user_id"),
+    )
     return user
 # --- END Clerk authentication ----------------------------------------------
 

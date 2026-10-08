@@ -22,14 +22,27 @@ type JsonBody = unknown;
 async function request<T>(method: string, path: string, body?: JsonBody): Promise<T> {
   const token = await getClerkToken();
   const headers: HeadersInit = {};
+  const controller = new AbortController();
+  const timeout = window.setTimeout(() => controller.abort(), 15000);
   if (body !== undefined) headers["Content-Type"] = "application/json";
   if (token) headers.Authorization = `Bearer ${token}`;
-  const res = await fetch(`${BASE}${path}`, {
-    method,
-    credentials: "include",
-    headers,
-    body: body === undefined ? undefined : JSON.stringify(body),
-  });
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      method,
+      credentials: "include",
+      headers,
+      body: body === undefined ? undefined : JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } catch (error) {
+    if (error instanceof DOMException && error.name === "AbortError") {
+      throw new Error(`A API demorou mais de 15s para responder (${path})`);
+    }
+    throw error;
+  } finally {
+    window.clearTimeout(timeout);
+  }
 
   // FastAPI reports request-validation failures as 422 with a {detail: [...]} body.
   if (!res.ok) {

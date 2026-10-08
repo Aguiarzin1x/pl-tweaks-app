@@ -88,6 +88,18 @@ export default function AppShell({ children }: { children: ReactNode }) {
     );
   }
 
+  if (me.isError && !(isApiError(me.error) && me.error.status === 401)) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background p-6 text-center">
+        <div className="max-w-lg space-y-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-6">
+          <p className="font-heading font-bold text-amber-200">Não foi possível carregar o seu painel</p>
+          <p className="text-sm text-muted-foreground">A sessão Clerk ou a API demorou demasiado a responder. Verifique o console do navegador e tente novamente.</p>
+          <Button variant="outline" onClick={() => void me.refetch()}>Tentar novamente</Button>
+        </div>
+      </div>
+    );
+  }
+
   if (me.isError && isApiError(me.error) && me.error.status === 401) {
     return <Navigate to="/login" replace />;
   }
